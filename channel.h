@@ -78,17 +78,17 @@ public:
     }
 
     void Subscribe(SubscriptionPtr subscription){
-        SubscriptionsList subs = GetSubscribtions();
+        SubscriptionsList subs = GetSubscriptions();
         subs.push_back(subscription);
-        SetSubscribtions(std::move(subs));
+        SetSubscriptions(std::move(subs));
     }
 
     void Unsubscribe(void* key){
-        SubscriptionsList subs = GetSubscribtions();
+        SubscriptionsList subs = GetSubscriptions();
         auto it = std::remove_if(subs.begin(), subs.end(), [key](const auto& s) { return s->GetKey() == key; });
         if (it != subs.end()) {
             subs.erase(it, subs.end());
-            SetSubscribtions(std::move(subs));
+            SetSubscriptions(std::move(subs));
         }
     }
 
@@ -116,12 +116,12 @@ public:
         }
     }
 
-    SubscriptionsList GetSubscribtions() const{
+    SubscriptionsList GetSubscriptions() const{
         std::unique_lock<std::mutex> lock(mutex_);
         return *subscriptions_;
     }
 
-    void SetSubscribtions(SubscriptionsList&& list){
+    void SetSubscriptions(SubscriptionsList&& list){
         auto new_list = std::make_shared<SubscriptionsList>(std::move(list));
         std::unique_lock<std::mutex> lock(mutex_);
         subscriptions_ = std::move(new_list);
