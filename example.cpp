@@ -171,16 +171,16 @@ int main(int argc, char** argv)
     Runtime runtime(channels.Build());
     Runtime::SetRuntime(&runtime);
 
+    std::vector<std::unique_ptr<DataSource>> sources;
+    sources.push_back(DataSource::Make<BooksData>("exchanges.AGRO.COWS.books"));
+    sources.push_back(DataSource::Make<AnndealData>("exchanges.AGRO.COWS.anndeal"));
+
     std::vector<std::unique_ptr<DataSink>> sinks;
     for (size_t i = 0; i < 5; ++i) {
         sinks.push_back(DataSink::Make<BooksData>("exchanges.AGRO.COWS.books"));
         sinks.push_back(DataSink::Make<AnndealData>("exchanges.AGRO.COWS.anndeal"));
     }
-    
-    std::vector<std::unique_ptr<DataSource>> sources;
-    sources.push_back(DataSource::Make<BooksData>("exchanges.AGRO.COWS.books"));
-    sources.push_back(DataSource::Make<AnndealData>("exchanges.AGRO.COWS.anndeal"));
-
+   
     SubscribeUnsubcsribe test_subunsub;
 
     std::cout << "Press CTRL-C to exit" << std::endl;
