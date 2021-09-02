@@ -17,7 +17,7 @@ namespace internal {
 
 class Subscription {
 public:
-    explicit Subscription(void* key) : key_(key){} // Ключ можно поменять, сделал для простоты
+    explicit Subscription(void* key) : key_(key){} // РљР»СЋС‡ С‚Р°РєРёРј СЃРґРµР»Р°Р» РґР»СЏ РїСЂРѕСЃС‚РѕС‚С‹
 
     virtual ~Subscription() = default;
 
@@ -51,7 +51,7 @@ public:
             func_(d);
         }
         else {
-            // TODO: Это нормальная ситуация ?
+            // TODO: Р­С‚Рѕ РЅРѕСЂР°РјР°Р»СЊРЅР°СЏ СЃРёС‚СѓР°С†РёСЏ ?
         }
     }
 
