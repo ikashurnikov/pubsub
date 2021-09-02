@@ -9,4 +9,7 @@ set(sources
     channel.h
     example.cpp)
 
+find_package(Threads REQUIRED)
+
 add_executable(example ${sources})
+target_link_libraries(example Threads::Threads)

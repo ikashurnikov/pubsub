@@ -2,6 +2,7 @@
 #include <chrono>
 #include <sstream>
 #include <csignal>
+#include <atomic>
 
 class BooksData : public Data{};
 class AnndealData : public Data{};
@@ -9,6 +10,9 @@ class AnndealData : public Data{};
 //----------------------------------------------------------------------
 // DataSource
 //----------------------------------------------------------------------
+
+template<class T>
+class DataSourceImpl;
 
 class DataSource {
 public:
@@ -65,6 +69,9 @@ private:
 //----------------------------------------------------------------------
 // DataSink
 //----------------------------------------------------------------------
+
+template<class T>
+class DataSinkImpl;
 
 class DataSink{
 public:

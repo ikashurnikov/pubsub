@@ -15,6 +15,9 @@ namespace internal {
 // Subscription
 //----------------------------------------------------------------------
 
+template<class T>
+class SubscriptionImpl;
+
 class Subscription {
 public:
     explicit Subscription(void* key) : key_(key){} // Ключ таким сделал для простоты
