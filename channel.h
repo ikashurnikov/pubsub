@@ -26,8 +26,7 @@ public:
     virtual void Call(const DataPtr& data) = 0;
 
     template<class Func>
-    static std::shared_ptr<Subscription> Make(void* key, Func&& func)
-    {
+    static std::shared_ptr<Subscription> Make(void* key, Func&& func){
         return std::make_shared<SubscriptionImpl<Func>>(key, std::forward<Func>(func));
     }
 
@@ -83,7 +82,7 @@ public:
 
     void Unsubscribe(void* key){
         SubscriptionsList subs = GetSubscribtions();
-        auto it = std::remove_if(subs.begin(), subs.end(), [key](const auto& s) {return s->GetKey() == key; });
+        auto it = std::remove_if(subs.begin(), subs.end(), [key](const auto& s) { return s->GetKey() == key; });
         if (it != subs.end()) {
             subs.erase(it, subs.end());
             SetSubscribtions(std::move(subs));
@@ -143,16 +142,13 @@ private:
 
 class ChannelList{
 public:
-    explicit ChannelList(std::vector<std::string>&& channel_names)
-    {
+    explicit ChannelList(std::vector<std::string>&& channel_names){
         channel_names_ = std::move(channel_names);
         channels_map_.reserve(channel_names_.size());
         for (const std::string& name : channel_names_) {
             channels_map_.emplace(name, std::make_unique<Channel>());
         }
     }
-
-    ChannelList(ChannelList&&) = default;
 
     template<class Func>
     void Subscribe(std::string_view channel_name, void* key, Func&& func){
