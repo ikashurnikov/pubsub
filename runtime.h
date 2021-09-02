@@ -62,8 +62,7 @@ private:
     static Runtime* g_rutimne;
 };
 
-inline Runtime* runtime()
-{
+inline Runtime* runtime(){
     return Runtime::GlobalRuntime();
 }
 

@@ -7,7 +7,7 @@ class BooksData : public Data{};
 class AnndealData : public Data{};
 
 //----------------------------------------------------------------------
-// Data
+// DataSource
 //----------------------------------------------------------------------
 
 class DataSource {
@@ -39,7 +39,6 @@ public:
 
 private:
     void ThreadProc(){
-        
         constexpr size_t call_count = 50000; //�Total number of publishes per second - 50000
 
         while (running_) {
@@ -57,7 +56,6 @@ private:
         }
     }
    
-
 private:
     std::string channel_name_;
     std::thread thread_;
@@ -100,10 +98,9 @@ public:
                 IncCallCount();
             }
         );
-    }    
+    }
 
-    void Stop() override
-    {
+    void Stop() override {
         runtime()->Unsubsribe(this);
         std::cout << "Sink " << channel_name_ << ". Data count: " << GetCallCount() << std::endl;
     }
@@ -113,17 +110,16 @@ private:
 };
 
 //----------------------------------------------------------------------
-// SubscribeUnsubsribe
+// SubscribeUnsubcsribe
 //----------------------------------------------------------------------
 
-class SubscribeUnsubsribe {
+class SubscribeUnsubcsribe {
 public:
-    SubscribeUnsubsribe() {
-        thread_ = std::thread(&SubscribeUnsubsribe::TheadProc, this);
+    SubscribeUnsubcsribe() {
+        thread_ = std::thread(&SubscribeUnsubcsribe::TheadProc, this);
     }
 
-    void Stop()
-    {
+    void Stop(){
         runing_ = false;
         thread_.join();
     }
@@ -132,7 +128,7 @@ private:
     void TheadProc() {
         while (runing_){
             runtime()->Subscribe(this, "exchanges.AGRO.COWS.books",[](const DataPtr&) {});
-            runtime()->Subscribe(this, "exchanges.AGRO.COWS.anndeal", [](const DataPtr&) {});
+            runtime()->Subscribe(this, "exchanges.AGRO.EGGS.anndeal", [](const DataPtr&) {});
 
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
             runtime()->Unsubsribe(this);
@@ -149,7 +145,6 @@ private:
 //----------------------------------------------------------------------
 
 
-
 int main(int argc, char** argv)
 {
     static std::atomic<bool> running{ true };
@@ -159,11 +154,13 @@ int main(int argc, char** argv)
     };
 
     signal(SIGINT, sig_handler);
-    #ifdef SIGBREAK
+ #ifdef SIGBREAK
     signal(SIGBREAK, sig_handler); // handles Ctrl-Break on Win32
-    #endif
+ #endif
     signal(SIGABRT, sig_handler);
     signal(SIGTERM, sig_handler);
+
+
 
     ChannelsBuilder channels;
     channels
@@ -180,20 +177,17 @@ int main(int argc, char** argv)
         sinks.push_back(DataSink::Make<AnndealData>("exchanges.AGRO.COWS.anndeal"));
     }
     
-
     std::vector<std::unique_ptr<DataSource>> sources;
     sources.push_back(DataSource::Make<BooksData>("exchanges.AGRO.COWS.books"));
     sources.push_back(DataSource::Make<AnndealData>("exchanges.AGRO.COWS.anndeal"));
 
-    SubscribeUnsubsribe test_subunsub;
+    SubscribeUnsubcsribe test_subunsub;
 
- 
     std::cout << "Press CTRL-C to exit" << std::endl;
     while (running) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     
-
     for (auto& src : sources) {
         src->Stop();
     }
