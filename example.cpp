@@ -101,7 +101,7 @@ public:
     }
 
     void Stop() override {
-        runtime()->Unsubsribe(this);
+        runtime()->Unsubcsribe(this);
         std::cout << "Sink " << channel_name_ << ". Data count: " << GetCallCount() << std::endl;
     }
 
@@ -131,7 +131,7 @@ private:
             runtime()->Subscribe(this, "exchanges.AGRO.EGGS.anndeal", [](const DataPtr&) {});
 
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
-            runtime()->Unsubsribe(this);
+            runtime()->Unsubcsribe(this);
         }
     }
 

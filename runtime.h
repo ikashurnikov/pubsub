@@ -53,7 +53,7 @@ public:
         channels_->Subscribe(channel_name, key, std::forward<Func>(func));
     }
 
-    void Unsubsribe(void* key){
+    void Unsubcsribe(void* key){
         channels_->Unsubscribe(key);
     }
 
